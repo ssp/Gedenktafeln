@@ -38,6 +38,8 @@ for letter in letters:
 	for node in nodes:
 		lines = node.stringValue().componentsSeparatedByString_("\n")
 		name = lines[0]
+		if len(name.split(",")) == 2:
+			name = name.split(",")[1].strip() + " " + name.split(",")[0].strip()
 		titel = ""
 		i = 1
 		if len(lines) % 2 == 0:
