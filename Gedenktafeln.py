@@ -71,12 +71,17 @@ KML.addChild_(KMLDocument)
 # ohne x
 letters = "abcdefghijklmnopqrstuvwyz"
 
+
 for letter in letters:
-	URL = NSURL.URLWithString_("http://stadtarchiv.goettingen.de/texte/gedenktafeln_" + letter + ".htm")
-	HTMLData = NSData.dataWithContentsOfURL_(URL)
-	HTMLString = NSString.alloc().initWithData_encoding_(HTMLData, NSISOLatin1StringEncoding)
+	filename = "Webseiten/" + letter + ".html"
+	(HTMLString, error) = NSString.stringWithContentsOfFile_encoding_error_(filename, NSISOLatin1StringEncoding, None)
+	if HTMLString == None:
+		URL = NSURL.URLWithString_("http://stadtarchiv.goettingen.de/texte/gedenktafeln_" + letter + ".htm")
+		HTMLData = NSData.dataWithContentsOfURL_(URL)
+		HTMLString = NSString.alloc().initWithData_encoding_(HTMLData, NSISOLatin1StringEncoding)
+		(result, error) = HTMLString.writeToFile_atomically_encoding_error_(filename, True, NSISOLatin1StringEncoding, None)
+
 	(HTML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(HTMLString, NSXMLDocumentTidyHTML, None)
-	HTMLString.release()
 
 	XPath = "//td/ul/li"
 	(nodes, error) = HTML.nodesForXPath_error_(XPath, None)
