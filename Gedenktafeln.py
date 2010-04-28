@@ -58,6 +58,82 @@ def fixaddress (string):
 
 	return string
 
+import httplib
+import urllib
+def personeninfo (name):
+	print
+	print "personeninfo called for === " + name + " ==="
+
+	filename = "Personen/" + name + ".html"
+	(personXHTMLString, error) = NSString.stringWithContentsOfFile_encoding_error_(filename, NSUTF8StringEncoding, None)
+	personXHTML = None
+	if personXHTMLString != None:
+		(personXHTML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(personXHTMLString, NSXMLDocumentTidyXML, None)
+		if personXHTML != None:
+			print "	Cached file parsed successfully"
+	
+	if personXHTML == None:
+		print "	Searching for person"
+		url = NSURL.URLWithString_("http://toolserver.org/~apper/pd/index.php")
+		
+		connection = httplib.HTTPConnection("toolserver.org")
+		headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "application/xml,application/xhtml+xml,text/html"}
+		params = urllib.urlencode({"name": name})
+		connection.request("POST", "/~apper/pd/index.php", params, headers)
+		response = connection.getresponse()
+		ergebnis = response.read()
+		connection.close()
+
+		(XML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(ergebnis, NSXMLDocumentTidyXML, None)
+		if XML == None:
+			print "	Failed to read server answer"
+		XPath = """//div[@class="moreinfo"]/a/@href"""
+		(nodes, error) = XML.nodesForXPath_error_(XPath, None)
+		
+		if nodes.count() == 1:
+			moreInfoURL = NSURL.URLWithString_("http://toolserver.org" + nodes[0].stringValue())
+			if moreInfoURL != None:
+				print "	more Information at: " + str(moreInfoURL)
+				(personXHTML, error) = NSXMLDocument.alloc().initWithContentsOfURL_options_error_(moreInfoURL, NSXMLDocumentTidyXML, None)
+				if personXHTML != None:
+					print "		successfully read additional information"
+					personXHTML.XMLData().writeToFile_atomically_(filename, True)
+				else:
+					print "		could not read additional information"
+			else:
+				print " 	could not figure out address of additional information"
+		else:
+			print "	" + str(nodes.count()) + " matches: don't know which one to pick"
+
+	imageURL = None
+	imagePageURL = None
+	personPageURL = None
+
+	if personXHTML != None:
+	
+		XPath = """//div[@id="header_persons"]/div/img/@src"""
+		(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+		if nodes.count() == 1:
+			imageURL = nodes[0].stringValue()
+			if imageURL.find("placeholder.jpg"):
+				imageURL = None
+		print "	image URL: " + str(imageURL)
+
+		XPath = """//div[@id="img_info"]/a/@href"""
+		(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+		if nodes.count() == 1:
+			imagePageURL = nodes[0].stringValue()
+
+		print "	imagePageURL: " + str(imagePageURL)
+
+		XPath = """//div[@id="main"]/div[@class="person_name"]/a/@href"""
+		(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+		if nodes.count() == 1:
+			personPageURL = nodes[0].stringValue()
+		print "	Wikipedia URL: " + str(personPageURL)
+		
+	return imageURL
+
 
 
 
@@ -70,7 +146,7 @@ KML.addChild_(KMLDocument)
 
 # ohne x
 letters = "abcdefghijklmnopqrstuvwyz"
-
+#letters = "y"
 
 for letter in letters:
 	filename = "Webseiten/" + letter + ".html"
@@ -90,6 +166,7 @@ for letter in letters:
 		lines = node.stringValue().componentsSeparatedByString_("\n")
 		if len(lines) > 2:
 			name = lines[0]
+			info = personeninfo(name)
 			if len(name.split(",")) == 2:
 				name = name.split(",")[1].strip() + " " + name.split(",")[0].strip()
 			titel = lines[1]
