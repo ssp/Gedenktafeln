@@ -23,6 +23,9 @@ Die folgenden Ordner sollten existieren:
 """
 
 
+"""
+Eintrag für Hölty falsch?
+"""
 
 
 import sys
@@ -112,6 +115,21 @@ u"Csoma, Alexander von Körös": "Sándor_Csoma",
 "Franklin, Benjamin": "Benjamin_Franklin",
 "Frege, Gottlob": "Gottlob_Frege",
 u"Fröbel, Friedrich Wilhelm August": u"Friedrich_Fröbel",
+"Georg V.": "Georg_V._(Hannover)", 
+"Gerlach, Leopold von": "Ludwig_Friedrich_Leopold_von_Gerlach",
+# "Goldschmidt, Victor Moritz": 
+"Grimm, Jacob und Wilhelm": "Jacob_Grimm", # speziell behandeln?
+"Gruner, Justus von": "Justus_von_Gruner",
+"Hagen, Oskar": "Oskar_Hagen",
+"Hahn, Otto", "Otto_Hahn",
+"Hanssen, Georg": "Georg_Hanssen",
+"Henle, Friedrich Gustav Jacob": "Jakob_Henle",
+"Henneberg, Wilhelm": "Wilhelm_Henneberg",
+"Hermann, Carl Friedrich": "Karl_Friedrich_Hermann",
+"Honda, Kotaro": u"Kōtarō_Honda",
+"Hugo, Gustav": u"Gustav_von_Hugo",
+"Joachim, Joseph": u"Joseph_Joachim",
+
 }
 
 
@@ -122,7 +140,8 @@ Tippfehler in Namen korrigieren
 """
 namenskorrekturen = {
 "Benecke, George Friedrich": "Benecke, Georg Friedrich",
-"Boie, Henrich Christian": "Boie, Heinrich Christian"
+"Boie, Henrich Christian": "Boie, Heinrich Christian",
+"Goeschen, Johann Friedrich Ludwig": u"Göschen, Johann Friedrich Ludwig",
 }
 
 def namenskorrektur (name):
