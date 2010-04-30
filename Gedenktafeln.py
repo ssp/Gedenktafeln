@@ -395,8 +395,8 @@ KMLDocument.addChild_(NSXMLNode.elementWithName_stringValue_("name", u"Gedenktaf
 KML.addChild_(KMLDocument)
 
 
-# ohne x
-letters = "abcdefghijklmnopqrstuvwyz"
+# ohne x, der Eintrag - steht für eine zusätzliche Datei mit Nachträgen.
+letters = "abcdefghijklmnopqrstuvwyz-"
 #letters = "g"
 
 for letter in letters:
