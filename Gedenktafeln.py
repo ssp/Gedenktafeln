@@ -371,7 +371,7 @@ def makeDescription(name, titel, jahre, adresse, info):
 
 	wikipediaTag = ""
 	if info["wikipediaURL"] != None:
-		wikipediaTag = "<p><a href='" + info["wikipediaURL"] + "'>Wikipedia Seite »</a></p>"
+		wikipediaTag = "<p><a href='" + info["wikipediaURL"] + u"'>Wikipedia Seite »</a></p>"
 #		wikipediaTag = "<iframe src='" + info["wikipediaURL"] + "'>"
 
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("WIKIPEDIATAG", wikipediaTag)
