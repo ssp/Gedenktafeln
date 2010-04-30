@@ -366,7 +366,7 @@ def makeDescription(name, titel, jahre, adresse, info):
 
 	imageTag = ""
 	if info["imageURL"] != None and info["imagePageURL"] != None:
-		imageTag = "<a class='portraitlink' style='display:block;text-decoration:none;color:#999;' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='float:right;margin-top:-3em;margin-left:0.5em;max-width:200px;' src='" + info["imageURL"] + "' alt='" + name + u"'><br><span style='float:right;clear:right;'>Bild: Wikipedia »</span></a>"
+		imageTag = "<a class='portraitlink' style='display:block;text-decoration:none;color:#999;float:right;' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='margin-top:-1em;margin-left:0.5em;max-width:200px;' src='" + info["imageURL"] + "' alt='" + name + u"'><br><span style='float:right;clear:right;'>Bild: Wikipedia »</span></a>"
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("IMAGETAG", imageTag)
 
 	wikipediaTag = ""
@@ -391,14 +391,29 @@ Skriptbeginn
 KML = NSXMLElement.elementWithName_("kml")
 KML.addAttribute_(NSXMLNode.attributeWithName_stringValue_("xmlns", "http://earth.google.com/kml/2.1"))
 KMLDocument = NSXMLElement.elementWithName_("Document")
+KML.addChild_(KMLDocument)
 KMLDocument.addChild_(NSXMLNode.elementWithName_stringValue_("name", u"Gedenktafeln an Göttinger Häusern"))
 author = NSXMLElement.elementWithName_("atom:author")
 author.addChild_(NSXMLNode.elementWithName_stringValue_("atom:name", "Sven-S. Porst"))
 KMLDocument.addChild_(author)
 link = NSXMLNode.elementWithName_("atom:link")
 link.addAttribute_(NSXMLNode.attributeWithName_stringValue_("href", "http://earthlingsoft.net/ssp/Gedenktafeln"))
-KMLDocument.addChild_(link)
-KML.addChild_(KMLDocument)
+KMLDocument.addChild_(link)#
+styleString = u"""
+<Style id="sspBalloonStyle">
+    <BalloonStyle>
+      <!-- styling of the balloon text -->
+      <text><![CDATA[
+      <div style="font-family:Georgia, serif">
+      $[description]
+	  <p style="clear:both;"><a href="http://earthlingsoft.net/ssp/Gedenktafeln/">Karte mit allen Gedenktafeln »</a></p>
+	  </div>
+ 	  ]]></text>
+	</BalloonStyle>
+</Style>"""
+(style, error) = NSXMLElement.alloc().initWithXMLString_error_(styleString, None)
+print "Error reading the style: " + str(error)
+KMLDocument.addChild_(style)
 
 
 # ohne x, der Eintrag - steht für eine zusätzliche Datei mit Nachträgen.
@@ -443,11 +458,12 @@ for letter in letters:
 					if adresse.find("Elliehausen") == -1:
 						volleadresse =  adresse + u", Göttingen"
 					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("address", volleadresse))
-					description = makeDescription(name, titel, jahre, adresse, info)
+					description = makeDescription(reversedname, titel, jahre, adresse, info)
 					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("description", description))
 					snippet = NSXMLNode.elementWithName_stringValue_("Snippet", titel)
 					snippet.addAttribute_(NSXMLNode.attributeWithName_stringValue_("maxLines", "1"))
 					placemark.addChild_(snippet)
+					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("styleUrl", "#sspBalloonStyle"))
 					KMLDocument.addChild_(placemark)
 					jahre = []
 
