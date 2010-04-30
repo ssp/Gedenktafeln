@@ -309,14 +309,14 @@ def personeninfo (name):
 			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
 			if nodes.count() > 0:
 				imageURL = nodes[0].stringValue()
-				if imageURL.find ("wikipedia") != -1:
+				if imageURL.find("http") == -1 :
 					imageURL = "http://de.wikipedia.org" + imageURL
 	
 			XPath = """//div[@class="thumbinner"]/a[@class="image"]/@href"""
 			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
 			if nodes.count() > 0:
 				imagePageURL = nodes[0].stringValue()
-				if imagePageURL.find ("wikipedia") != -1:
+				if imagePageURL.find("http") == -1:
 					imagePageURL = "http://de.wikipedia.org" + imagePageURL
 			
 			wikipediaURL = personURLString
