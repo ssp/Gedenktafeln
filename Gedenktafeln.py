@@ -445,6 +445,9 @@ for letter in letters:
 					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("address", volleadresse))
 					description = makeDescription(name, titel, jahre, adresse, info)
 					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("description", description))
+					snippet = NSXMLNode.elementWithName_stringValue_("Snippet", titel)
+					snippet.addAttribute_(NSXMLNode.attributeWithName_stringValue_("maxLines", "1"))
+					placemark.addChild_(snippet)
 					KMLDocument.addChild_(placemark)
 					jahre = []
 
