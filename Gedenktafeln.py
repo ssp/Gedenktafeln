@@ -277,7 +277,7 @@ def personeninfo (name):
 		if nodes.count() == 1:
 			personURLString = NSString.stringWithString_("http://toolserver.org").stringByAppendingString_(nodes[0].stringValue())
 		elif nodes.count() > 1:
-			print "	" + str(nodes.count()) + " matches: don't know which one to pick ****************"
+			print "	" + str(nodes.count()) + " matches: don't know which one to pick ******************************************"
 
 		if personURLString != None:
 			personURLString = NSString.stringWithString_(personURLString).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding)
@@ -289,11 +289,11 @@ def personeninfo (name):
 					print "		successfully read additional information"
 					personXHTML.XMLData().writeToFile_atomically_(filename, True)
 				else:
-					print "		could not read additional information ******************"
+					print "		could not read additional information ******************************************"
 			else:
-				print "		could not build URL with additional information ****************"
+				print "		could not build URL with additional information ******************************************"
 		else:
-			print " 	could not figure out address of additional information ****************"
+			print " 	could not figure out address of additional information ******************************************"
 
 	imageURL = None
 	imagePageURL = None
