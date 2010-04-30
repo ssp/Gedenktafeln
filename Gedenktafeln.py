@@ -77,10 +77,11 @@ def fixaddress (string):
 Viel Handarbeit, um die richtigen Wikipedia-Einträgen Namen zuzuordnen.
 """
 personURLHints = {
-"Adolf Friedrich": "Adolph_Friedrich,_Herzog_von_Cambridge",
+"Adolf Friedrich": "Adolphus_Frederick,_1._Duke_of_Cambridge",
 "Altenstein, Karl Sigmund Franz Freiherr vom Stein zum": "Karl_vom_Stein_zum_Altenstein",
 "Arnim, Achim von": "Achim_von_Arnim",
 "August Friedrich": "Augustus_Frederick,_Duke_of_Sussex",
+"Auwers, Arthur Julius Georg Friedrich von": "http://de.wikipedia.org/wiki/Arthur_Auwers",
 "Bancroft, George": "George_Bancroft_(Politiker)",
 "Barbara": u"Barbara_(Sängerin)",
 "Barth, Karl": "Karl_Barth",
@@ -99,49 +100,104 @@ u"Bürger, Gottfried August": u"Gottfried_August_Bürger",
 "Clebsch, Rudolf Friedrich Alfred": "Alfred_Clebsch",
 "Coleridge, Samuel Taylor": "Samuel_Taylor_Coleridge",
 "Constant, Benjamin": "Benjamin_Constant",
-u"Csoma, Alexander von Körös": "Sándor_Csoma",
+u"Csoma, Alexander von Körös": u"Sándor_Csoma",
 "Curtius, Ernst": "Ernst_Curtius", 
 "Dehio, Georg Gottfried Julius": "Georg_Dehio",
 "Diez, Friedrich": "Friedrich_Christian_Diez",
 "Ehrenfeuchter, Friedrich August Eduard": "Friedrich_Ehrenfeuchter",
 "Eichhorn, Joh. Gottfried": "Johann_Gottfried_Eichhorn",
-"Ernst August": "Ernst_August_I._(Hannover)",
+"Ernst August": u"Ernst_August_I._(Hannover)",
 "Erxleben, Johann Christian Polycarp": "Johann_Christian_Erxleben",
 "Esmarch, Johannes Friedrich August von": "Friedrich_von_Esmarch",
-"Arthur J. Evans": "Arthur_Evans",
-"Edward Everett": "Edward_Everett",
+"Evans, Arthur J.": "http://de.wikipedia.org/wiki/Arthur_Evans",
+"Everett, Edward": "Edward_Everett",
 "Fliedner, Theodor": "Theodor_Fliedner",
 "Forster, Georg": "Georg_Forster",
 "Franklin, Benjamin": "Benjamin_Franklin",
 "Frege, Gottlob": "Gottlob_Frege",
-u"Fröbel, Friedrich Wilhelm August": u"Friedrich_Fröbel",
+u"Fröbel, Friedrich Wilhelm August": u"http://de.wikipedia.org/wiki/Friedrich_Wilhelm_August_Fröbel", # nicht im Namensserver?
 "Georg V.": "Georg_V._(Hannover)", 
 "Gerlach, Leopold von": "Ludwig_Friedrich_Leopold_von_Gerlach",
-# "Goldschmidt, Victor Moritz": 
-"Grimm, Jacob und Wilhelm": "Jacob_Grimm", # speziell behandeln?
+"Goldschmidt, Victor Moritz": "http://de.wikipedia.org/wiki/Viktor_Moritz_Goldschmidt",
+"Grimm, Jacob und Wilhelm": u"http://de.wikipedia.org/wiki/Brüder_Grimm", # speziell behandeln? / einzelne nicht im Namensserver
 "Gruner, Justus von": "Justus_von_Gruner",
 "Hagen, Oskar": "Oskar_Hagen",
-"Hahn, Otto", "Otto_Hahn",
+"Hahn, Otto": "Otto_Hahn",
 "Hanssen, Georg": "Georg_Hanssen",
+"Heine, Heinrich": "http://de.wikipedia.org/wiki/Heinrich_Heine",
 "Henle, Friedrich Gustav Jacob": "Jakob_Henle",
 "Henneberg, Wilhelm": "Wilhelm_Henneberg",
 "Hermann, Carl Friedrich": "Karl_Friedrich_Hermann",
+"Heyne, Moritz": "http://de.wikipedia.org/wiki/Moritz_Heyne",
 "Honda, Kotaro": u"Kōtarō_Honda",
 "Hugo, Gustav": u"Gustav_von_Hugo",
 "Joachim, Joseph": u"Joseph_Joachim",
-
+"Kaestner, Abraham Gotthelf": u"Abraham_Gotthelf_Kästner",
+u"König, Franz": u"http://de.wikipedia.org/wiki/Franz_König_(Chirurg)",
+"Lachmann, Karl Konrad Friedrich Wilhelm": "http://de.wikipedia.org/wiki/Karl_Lachmann",
+"Langenbeck, Bernhard Conrad Rudolf von": "http://de.wikipedia.org/wiki/Bernhard_von_Langenbeck",
+"Ludwig I.": "http://de.wikipedia.org/wiki/Ludwig_I._(Bayern)",
+u"Ludwig IV. Großherzog von Hessen": u"http://de.wikipedia.org/wiki/Ludwig_IV._(Hessen-Darmstadt)",
+u"Maximilian II.": u"http://de.wikipedia.org/wiki/Maximilian_II._Joseph_(Bayern)",
+"Mayer, Tobias": "http://de.wikipedia.org/wiki/Tobias_Mayer",
+"Miquel, Johann Franz von": "http://de.wikipedia.org/wiki/Johannes_von_Miquel",
+"Mitscherlich, Eilhard": "http://de.wikipedia.org/wiki/Eilhard_Mitscherlich",
+u"Müller, Johannes von": u"http://de.wikipedia.org/wiki/Johannes_von_Müller",
+"Olbers, Wilhelm": "http://de.wikipedia.org/wiki/Heinrich_Wilhelm_Olbers",
+"Planck, Gottlieb": "http://de.wikipedia.org/wiki/Gottlieb_Planck",
+"Plessner, Helmuth": "http://de.wikipedia.org/wiki/Helmuth_Plessner",
+"Pohl, Robert W.": "http://de.wikipedia.org/wiki/Robert_Wichard_Pohl",
+"Ritschl, Albrecht Benjamin": "http://de.wikipedia.org/wiki/Albrecht_Ritschl_(Theologe)",
+"Ritter, August Heinrich": "http://de.wikipedia.org/wiki/Heinrich_Ritter",
+"Ritter, Karl": "http://de.wikipedia.org/wiki/Carl_Ritter",
+"Roth, Heinrich": u"http://de.wikipedia.org/wiki/Heinrich_Roth_(Pädagoge)",
+"Savigny, Friedrich Carl von": "http://de.wikipedia.org/wiki/Friedrich_Carl_von_Savigny",
+u"Schlözer, August Ludwig von": u"http://de.wikipedia.org/wiki/August_Ludwig_von_Schlözer",
+u"Schroeter, Joh. Hyronimus": u"http://de.wikipedia.org/wiki/Johann_Hieronymus_Schröter",
+u"Schücking, Christoph Bernhard Levin": u"http://de.wikipedia.org/wiki/Levin_Schücking",
+u"Schulenburg, Fritz-Dietlof Graf v.d.": u"http://de.wikipedia.org/wiki/Fritz-Dietlof_Graf_von_der_Schulenburg",
+"Schultz, Ernst Andreas Heinrich Hermann": "http://de.wikipedia.org/wiki/Hermann_Schultz",
+"Siebold, Eduard Karl Kaspar Jakob von": "http://de.wikipedia.org/wiki/Eduard_Caspar_Jacob_von_Siebold",
+"Smend, Rudolf": "http://de.wikipedia.org/wiki/Rudolf_Smend",
+"Soetbeer, Georg Adolf": "http://de.wikipedia.org/wiki/Soetbeer",
+"Spitta, Karl Johann Philipp": "http://de.wikipedia.org/wiki/Philipp_Spitta",
+"Spittler, Ludwig Timotheus Freiherr von": "http://de.wikipedia.org/wiki/Ludwig_Timotheus_Spittler",
+"Stolberg-Stolberg, Christian Graf zu": "http://de.wikipedia.org/wiki/Christian_zu_Stolberg-Stolberg",
+"Stolberg- Stolberg, Friedrich Leopold Graf zu": "http://de.wikipedia.org/wiki/Friedrich_Leopold_zu_Stolberg-Stolberg",
+"Tammann, Gustav": "http://de.wikipedia.org/wiki/Gustav_Tammann",
+"Thorbecke, Johan Rudolf": "http://de.wikipedia.org/wiki/Johan_Rudolf_Thorbecke",
+"Treitschke, Heinrich von": "http://de.wikipedia.org/wiki/Heinrich_von_Treitschke",
+"Voss, Johann Heinrich": u"http://de.wikipedia.org/wiki/Johann_Heinrich_Voß",
+"Wagner, Hermann": "http://de.wikipedia.org/wiki/Hermann_Wagner_(Geograph)",
+"Wagner, Rudolf": "http://de.wikipedia.org/wiki/Rudolf_Wagner_(Mediziner)",
+"Waitz, Georg": "http://de.wikipedia.org/wiki/Georg_Waitz",
+"Weber, Werner": "http://de.wikipedia.org/wiki/Werner_Weber_(Jurist)",
+"Weber, Wilhelm": "http://de.wikipedia.org/wiki/Wilhelm_Eduard_Weber",
+"Wied, Maximilian, Prinz zu": "http://de.wikipedia.org/wiki/Maximilian_zu_Wied-Neuwied",
+"Wilhelm II.": u"http://de.wikipedia.org/wiki/Wilhelm_II._(Württemberg)",
+"Wilhelm August Ludwig": "http://de.wikipedia.org/wiki/Wilhelm_(Braunschweig)",
+"Young, Thomas": "http://de.wikipedia.org/wiki/Thomas_Young_(Physiker)",
+"Zimmerli, Walther": "http://de.wikipedia.org/wiki/Walther_Zimmerli",
 }
 
 
 
 
 """
-Tippfehler in Namen korrigieren
+Tippfehler in Namen korrigieren und Namensschreibweisen anpassen.
 """
 namenskorrekturen = {
 "Benecke, George Friedrich": "Benecke, Georg Friedrich",
 "Boie, Henrich Christian": "Boie, Heinrich Christian",
 "Goeschen, Johann Friedrich Ludwig": u"Göschen, Johann Friedrich Ludwig",
+"Gauss, Johann Carl Friedrich": u"Gauß, Johann Carl Friedrich",
+"Lietzmann, Walter": "Lietzmann, Walther",
+"Listing, Johann Benedikt": "Listing, Johann Benedict",
+"Lotze, Rudolph Hermann": "Lotze, Rudolf Hermann",
+"Nernst, Walter": "Nernst, Walther",
+"Richter, August Gottlob": "Richter, August Gottlieb",
+"Siegel, Carl L.": "Siegel, Carl Ludwig",
+
 }
 
 def namenskorrektur (name):
@@ -155,7 +211,8 @@ def namenskorrektur (name):
 Tippfehler in Titeln korrigieren
 """
 titelkorrekturen = {
-
+"Geschitsschreiber": "Geschichtsschreiber",
+"Methematiker und Astronom": "Mathematiker und Astronom",
 }
 
 def titelkorrektur (titel):
@@ -187,41 +244,43 @@ def personeninfo (name):
 		if personXHTML != None:
 			print "	Cached file parsed successfully"
 	
+	personURLString = None
+	if personURLHints.has_key(name):
+		personURLString = personURLHints[name]
+		if personURLString.find("wikipedia") == -1:
+			personURLString = "http://toolserver.org/~apper/pd/person/" + personURLString
+		print "	using hint for correct person"
+
 	if personXHTML == None:
 		print "	Searching for person"
-		personURLString = None
 		nodes = NSArray.array()
+		url = NSURL.URLWithString_("http://toolserver.org/~apper/pd/index.php")
+	
+		connection = httplib.HTTPConnection("toolserver.org")
+		headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "application/xml,application/xhtml+xml,text/html"}
+		params = urllib.urlencode({"name": name})
+		connection.request("POST", "/~apper/pd/index.php", params, headers)
+		response = connection.getresponse()
+		ergebnis = response.read()
+		connection.close()
 
-		if personURLHints.has_key(name):
-			personURLString = "http://toolserver.org/~apper/pd/person/" + personURLHints[name]
-			print "	using hint for correct person"
-		else:
-			url = NSURL.URLWithString_("http://toolserver.org/~apper/pd/index.php")
-		
-			connection = httplib.HTTPConnection("toolserver.org")
-			headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "application/xml,application/xhtml+xml,text/html"}
-			params = urllib.urlencode({"name": name})
-			connection.request("POST", "/~apper/pd/index.php", params, headers)
-			response = connection.getresponse()
-			ergebnis = response.read()
-			connection.close()
+		# ergebnis String ist UTF-8 gelesen als Latin-1, also reparieren
+		stringData = NSString.stringWithString_(ergebnis).dataUsingEncoding_(NSISOLatin1StringEncoding)
+		ergebnis = NSString.alloc().initWithData_encoding_(stringData, NSUTF8StringEncoding)
+		(XML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(ergebnis, NSXMLDocumentTidyXML, None)
 
-			# ergebnis String ist UTF-8 gelesen als Latin-1, also reparieren
-			stringData = NSString.stringWithString_(ergebnis).dataUsingEncoding_(NSISOLatin1StringEncoding)
-			ergebnis = NSString.alloc().initWithData_encoding_(stringData, NSUTF8StringEncoding)
-			(XML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(ergebnis, NSXMLDocumentTidyXML, None)
-
-			if XML == None:
-				print "	Failed to read server answer"
-			XPath = """//div[@class="moreinfo"]/a/@href"""
-			(nodes, error) = XML.nodesForXPath_error_(XPath, None)
-		
+		if XML == None:
+			print "	Failed to read server answer"
+		XPath = """//div[@class="moreinfo"]/a/@href"""
+		(nodes, error) = XML.nodesForXPath_error_(XPath, None)
+	
 		if nodes.count() == 1:
 			personURLString = NSString.stringWithString_("http://toolserver.org").stringByAppendingString_(nodes[0].stringValue())
 		elif nodes.count() > 1:
-			print "	" + str(nodes.count()) + " matches: don't know which one to pick"
+			print "	" + str(nodes.count()) + " matches: don't know which one to pick ****************"
 
 		if personURLString != None:
+			personURLString = NSString.stringWithString_(personURLString).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding)
 			personURL = NSURL.URLWithString_(personURLString)
 			if personURL != None:
 				print "	more Information at: " + str(personURLString)
@@ -230,38 +289,64 @@ def personeninfo (name):
 					print "		successfully read additional information"
 					personXHTML.XMLData().writeToFile_atomically_(filename, True)
 				else:
-					print "		could not read additional information"
+					print "		could not read additional information ******************"
 			else:
-				print "		could not build URL with additional information"
+				print "		could not build URL with additional information ****************"
 		else:
-			print " 	could not figure out address of additional information"
+			print " 	could not figure out address of additional information ****************"
 
 	imageURL = None
 	imagePageURL = None
 	wikipediaURL = None
 
 	if personXHTML != None:
-		XPath = """//div[@id="header_persons"]/div/img/@src"""
+		XPath = """//div[@id="globalWrapper"]"""
 		(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
-		if nodes.count() == 1:
-			imageURL = nodes[0].stringValue()
-			if imageURL.find("placeholder.jpg") != -1:
-				imageURL = None
-		print "	image URL: " + str(imageURL)
-
-		XPath = """//div[@id="img_info"]/a/@href"""
-		(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
-		if nodes.count() == 1:
-			imagePageURL = nodes[0].stringValue()
-
-		print "	imagePageURL: " + str(imagePageURL)
-
-		XPath = """//div[@id="main"]/div[@class="person_name"]/a/@href"""
-		(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
-		if nodes.count() == 1:
-			wikipediaURL = nodes[0].stringValue()
-		print "	Wikipedia URL: " + str(wikipediaURL)
 		
+		if nodes.count() != 0:
+			# info von Wikipedia Seite
+			XPath = """//div[@class="thumbinner"]/a[@class="image"]/img[@class="thumbimage"]/@src"""
+			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+			if nodes.count() > 0:
+				imageURL = nodes[0].stringValue()
+				if imageURL.find ("wikipedia") != -1:
+					imageURL = "http://de.wikipedia.org" + imageURL
+	
+			XPath = """//div[@class="thumbinner"]/a[@class="image"]/@href"""
+			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+			if nodes.count() > 0:
+				imagePageURL = nodes[0].stringValue()
+				if imagePageURL.find ("wikipedia") != -1:
+					imagePageURL = "http://de.wikipedia.org" + imagePageURL
+			
+			wikipediaURL = personURLString
+			print "	extracted information from Wikipedia page"
+			
+		else:
+			# info aus der personensuche
+			XPath = """//div[@id="header_persons"]/div/img/@src"""
+			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+			if nodes.count() == 1:
+				imageURL = nodes[0].stringValue()
+				if imageURL.find("placeholder.jpg") != -1:
+					imageURL = None
+	
+			XPath = """//div[@id="img_info"]/a/@href"""
+			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+			if nodes.count() == 1:
+				imagePageURL = nodes[0].stringValue()
+	
+			XPath = """//div[@id="main"]/div[@class="person_name"]/a/@href"""
+			(nodes, error) = personXHTML.nodesForXPath_error_(XPath, None)
+			if nodes.count() == 1:
+				wikipediaURL = nodes[0].stringValue()
+			print "	extracted information from person search page"
+
+		
+		print "	image URL: " + str(imageURL)
+		print "	imagePageURL: " + str(imagePageURL)
+		print "	Wikipedia URL: " + str(wikipediaURL)
+	
 	return {"imageURL": imageURL, "imagePageURL": imagePageURL, "wikipediaURL": wikipediaURL}
 
 
@@ -277,10 +362,11 @@ def makeDescription(name, titel, jahre, adresse, info):
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("NAME", name)
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("TITEL", titel)
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("JAHRE", "und ".join(jahre))
+	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("ADRESSE", adresse)
 
 	imageTag = ""
 	if info["imageURL"] != None and info["imagePageURL"] != None:
-		imageTag = "<a class='portraitlink' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' src='" + info["imageURL"] + "' alt='" + name + "'/></a>"
+		imageTag = "<a class='portraitlink' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='float:right' src='" + info["imageURL"] + "' alt='" + name + "'/></a>"
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("IMAGETAG", imageTag)
 
 	wikipediaTag = ""
@@ -311,7 +397,7 @@ KML.addChild_(KMLDocument)
 
 # ohne x
 letters = "abcdefghijklmnopqrstuvwyz"
-#letters = "y"
+#letters = "g"
 
 for letter in letters:
 	filename = "Webseiten/" + letter + ".html"
