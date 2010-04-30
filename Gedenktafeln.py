@@ -392,6 +392,12 @@ KML = NSXMLElement.elementWithName_("kml")
 KML.addAttribute_(NSXMLNode.attributeWithName_stringValue_("xmlns", "http://earth.google.com/kml/2.1"))
 KMLDocument = NSXMLElement.elementWithName_("Document")
 KMLDocument.addChild_(NSXMLNode.elementWithName_stringValue_("name", u"Gedenktafeln an Göttinger Häusern"))
+author = NSXMLElement.elementWithName_("atom:author")
+author.addChild_(NSXMLNode.elementWithName_stringValue_("atom:name", "Sven-S. Porst"))
+KMLDocument.addChild_(author)
+link = NSXMLNode.elementWithName_("atom:link")
+link.addAttribute_(NSXMLNode.attributeWithName_stringValue_("href", "http://earthlingsoft.net/ssp/Gedenktafeln"))
+KMLDocument.addChild_(link)
 KML.addChild_(KMLDocument)
 
 
