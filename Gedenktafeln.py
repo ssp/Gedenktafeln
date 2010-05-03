@@ -366,7 +366,7 @@ def makeDescription(name, titel, jahre, adresse, info):
 
 	imageTag = ""
 	if info["imageURL"] != None and info["imagePageURL"] != None:
-		imageTag = "<a class='portraitlink' style='display:block;text-decoration:none;color:#999;float:right;' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='margin-top:-1em;margin-left:0.5em;max-width:200px;' src='" + info["imageURL"] + "' alt='" + name + u"'><br><span style='float:right;clear:right;'>Bild: Wikipedia »</span></a>"
+		imageTag = "<a class='portraitlink' style='display:block;text-decoration:none;color:#999;float:right;width:200px;text-align:right;' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='margin-top:-1em;margin-left:0.5em;max-width:200px;' src='" + info["imageURL"] + "' alt='" + name + u"'><br><span style=''>Bild: Wikipedia »</span></a>"
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("IMAGETAG", imageTag)
 
 	wikipediaTag = ""
