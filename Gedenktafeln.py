@@ -33,7 +33,7 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 import re
 from Foundation import *
-
+myURL = "http://earthlingsoft.net/ssp/Gedenktafeln/"
 
 
 """
@@ -151,6 +151,7 @@ u"Müller, Johannes von": u"http://de.wikipedia.org/wiki/Johannes_von_Müller",
 "Ritter, August Heinrich": "http://de.wikipedia.org/wiki/Heinrich_Ritter",
 "Ritter, Karl": "http://de.wikipedia.org/wiki/Carl_Ritter",
 "Roth, Heinrich": u"http://de.wikipedia.org/wiki/Heinrich_Roth_(Pädagoge)",
+"Sander, Philipp": "", # suchergebnis enthält falsche person
 "Savigny, Friedrich Carl von": "http://de.wikipedia.org/wiki/Friedrich_Carl_von_Savigny",
 u"Schlözer, August Ludwig von": u"http://de.wikipedia.org/wiki/August_Ludwig_von_Schlözer",
 u"Schroeter, Joh. Hyronimus": u"http://de.wikipedia.org/wiki/Johann_Hieronymus_Schröter",
@@ -178,6 +179,46 @@ u"Schulenburg, Fritz-Dietlof Graf v.d.": u"http://de.wikipedia.org/wiki/Fritz-Di
 "Wilhelm August Ludwig": "http://de.wikipedia.org/wiki/Wilhelm_(Braunschweig)",
 "Young, Thomas": "http://de.wikipedia.org/wiki/Thomas_Young_(Physiker)",
 "Zimmerli, Walther": "http://de.wikipedia.org/wiki/Walther_Zimmerli",
+}
+
+
+"""
+Bilder der Gedenktafeln in Wikimedia Commons 
+http://commons.wikimedia.org/wiki/Category:Göttinger_Gedenktafeln
+"""
+photos = {
+"Albrecht, Wilhelm Eduard": "Informationsschild_(Eduard_Albrecht).JPG",
+"Benfey, Theodor": "Informationsschild_(Theodor_Benfey).JPG.JPG",
+"Bergmann, Friedrich Christian": "Informationsschild_(Friedrich_Bergmann).JPG",
+"Berthold, Arnold Adolph": "Informationsschild_(Arnold_Adolph_Berthold).JPG",
+"Bismarck, Otto von": "Informationsschild_(Otto_von_Bismarck).JPG.JPG",
+"Bolyai, Wolfgang": "BolyaiPlacardGoettingen.JPG",
+"Bunsen, Robert Wilhelm": "Informationsschild_(Robert_Wilhelm_Bunsen).JPG",
+"Clark, William S.": "Image-Informationsschild_(William_S._Clark).JPG",
+"Dehio, Georg Gottfried Julius": "Dehioplaque.JPG",
+# "": "Informationsschild_(Johann_Andreas_Eisenbarth).JPG" # keine 'offizielle' Gedenktafel
+"Esmarch, Johannes Friedrich August von": "Informationsschild_(August_von_Esmarch).JPG",
+"Listing, Johann Benedict": "Gedenktafel_Listing_Michaelishaus.jpg",
+"Lubecus, Franciscus": "Lubecus_Marmortafel.JPG",
+"Franklin, Benjamin": "Informationsschild_(Benjamin_Franklin).JPG",
+"Gesner, Johann Matthias": "Informationsschild_(Mathias_Gessner).JPG",
+"Goethe, Johann Wolfgang von": "Informationsschild_(Johann_Wolfgang_von_Goethe).JPG", 
+"Grimm, Jacob und Wilhelm": "Informationsschild_(Jacob_und_Wilhem_Grimm).JPG",
+u"Gyarmathi, Sámuel": u"Informationsschild_(Sámuel_Gyarmathi).JPG",
+"Hausmann, Johann Friedrich Ludwig": "Informationsschild_(Ludwig_Hausmann).JPG",
+"Koch, Robert": "Informationsschild_(Robert_Koch).JPG",
+"Michaelis, Caroline": "Informationsschild_(Caroline_Michaelis).JPG",
+"Michaelis, Johann David": "Informationsschild_(D.D._Michaelis).JPG",
+"Mosheim, Johann Lorenz von": u"GöttingerGedenktafelMosheim.JPG",
+"Richter, August Gottlieb": "Informationsschild_(August_Gottlieb).JPG",
+"Riemann, Bernhard": "Informationsschild_(Bernhard_Riemann).JPG",
+"Runde, Justus Friedrich": "Informationsschild_(Justus_Friedrich_Runde).JPG",
+u"Schücking, Christoph Bernhard Levin": u"Informationsschild_(Levin_Schücking).JPG",
+"Schulenburg, Fritz-Dietlof Graf v.d.": u"GöttingerGedenktafelnWiderstand.JPG",
+"Trott zu Solz, Adam von": u"GöttingerGedenktafelnWiderstand.JPG",
+# "": "Wieackersign.JPG" # keine 'offizielle' Gedenktafel
+"Windthorst, Ludwig": "Informationsschild_(Ludwig_Windthorst).JPG",
+"Young, Thomas": "Informationsschild_(Thomas_Young).JPG",
 }
 
 
@@ -227,6 +268,68 @@ def titelkorrektur (titel):
 
 import httplib
 import urllib
+import xattr
+
+"""
+Speichert eine lokale Kopie des Bildes.
+"""
+def localCopyOfImageInFolder(imageURLString, imagePageString, targetFolder):
+	if imageURLString != None:
+		fileName = NSString.stringWithString_(imageURLString).lastPathComponent()
+		filePath = targetFolder + "/" + fileName
+
+		if NSFileManager.defaultManager().fileExistsAtPath_(filePath) == False:
+			imageURL = NSURL.URLWithString_(NSString.stringWithString_(NSString.stringWithString_(imageURLString).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding)))
+			request = NSURLRequest.requestWithURL_(imageURL)
+			data, response, error = NSURLConnection.sendSynchronousRequest_returningResponse_error_(request, None, None)
+			if data != None:
+				if data.writeToFile_atomically_(filePath, True):
+					print "	Image file cached successfully at " + filePath
+				else:
+					print "	* Failed to write image file at " + filePath
+			else:
+				print "	* Could not load " + imageURLString + " (" + error.description() + ")"
+
+			# get image creator's name
+			infoURL = NSURL.URLWithString_(NSString.stringWithString_(imagePageString).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding))
+			(infoPageString, error) = NSString.stringWithContentsOfURL_encoding_error_(infoURL, NSUTF8StringEncoding, None)
+			if infoPageString != None:
+				(infoXHTML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(infoPageString, NSXMLDocumentTidyXML, None)
+				if infoXHTML != None:
+					nodes, error = infoXHTML.nodesForXPath_error_("""//tr[contains(.,"current")]/td/a[contains(@class,'mw-userlink')]""", None)
+					if len(nodes) > 0:
+						wikipediaPath = nodes[0]
+						username = wikipediaPath.stringValue().split(":")[-1]
+						xattr.setxattr(filePath, "net.earthlingsoft.imageauthor", username)
+						print "	Image author »" + username + "« stored."
+					else:
+						nodes, error = infoXHTML.nodesForXPath_error_("""//tr[contains(.,"aktuell")]/td/a[contains(@class,'mw-userlink')]""", None)
+						if len(nodes) > 0:
+							wikipediaPath = nodes[0]
+							username = wikipediaPath.stringValue().split(":")[-1]
+							xattr.setxattr(filePath, "net.earthlingsoft.imageauthor", username)
+							print "	Image author »" + username + "« stored."
+						else:
+							print "		* Could not find author information in info page at " + imagePageString
+				else:
+					print "		* Could not parse XML of info page at " + imagePageString
+			else:
+				print "		* Could not download image information at " + imagePageString
+
+		else:
+			print "	Cached image file available"
+		
+		newURL = myURL + targetFolder + "/" + fileName
+	else:
+		newURL = None
+		
+	return newURL
+
+		
+
+
+
+
 """
 Sammelt Informationen über die Person über eine Namenssuche in den den Wikipedia Einträgen.
 
@@ -247,11 +350,11 @@ def personeninfo (name):
 	personURLString = None
 	if personURLHints.has_key(name):
 		personURLString = personURLHints[name]
-		if personURLString.find("wikipedia") == -1:
+		if len(personURLString) > 0 and personURLString.find("wikipedia") == -1:
 			personURLString = "http://toolserver.org/~apper/pd/person/" + personURLString
 		print "	using hint for correct person"
 
-	if personXHTML == None:
+	if personXHTML == None and personURLString != None and len(personURLString) > 0:
 		print "	Searching for person"
 		nodes = NSArray.array()
 		url = NSURL.URLWithString_("http://toolserver.org/~apper/pd/index.php")
@@ -269,7 +372,7 @@ def personeninfo (name):
 		ergebnis = NSString.alloc().initWithData_encoding_(stringData, NSUTF8StringEncoding)
 		(XML, error) = NSXMLDocument.alloc().initWithXMLString_options_error_(ergebnis, NSXMLDocumentTidyXML, None)
 
-		if XML == None:
+		if XML == None or (personURLString) == 0:
 			print "	Failed to read server answer"
 		XPath = """//div[@class="moreinfo"]/a/@href"""
 		(nodes, error) = XML.nodesForXPath_error_(XPath, None)
@@ -280,23 +383,26 @@ def personeninfo (name):
 			print "	" + str(nodes.count()) + " matches: don't know which one to pick ******************************************"
 
 		if personURLString != None:
-			personURLString = NSString.stringWithString_(personURLString).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding)
-			personURL = NSURL.URLWithString_(personURLString)
-			if personURL != None:
-				print "	more Information at: " + str(personURLString)
-				(personXHTML, error) = NSXMLDocument.alloc().initWithContentsOfURL_options_error_(personURL, 	NSXMLDocumentTidyXML, None)
-				if personXHTML != None:
-					print "		successfully read additional information"
-					personXHTML.XMLData().writeToFile_atomically_(filename, True)
+			if len(personURLString) > 0 :
+				personURLString = NSString.stringWithString_(personURLString).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding)
+				personURL = NSURL.URLWithString_(personURLString)
+				if personURL != None:
+					print "	more Information at: " + str(personURLString)
+					(personXHTML, error) = NSXMLDocument.alloc().initWithContentsOfURL_options_error_(personURL, 	NSXMLDocumentTidyXML, None)
+					if personXHTML != None:
+						print "		successfully read additional information"
+						personXHTML.XMLData().writeToFile_atomically_(filename, True)
+					else:
+						print "		could not read additional information ******************************************"
 				else:
-					print "		could not read additional information ******************************************"
+					print "		could not build URL with additional information ******************************************"
 			else:
-				print "		could not build URL with additional information ******************************************"
-		else:
-			print " 	could not figure out address of additional information ******************************************"
+				print " 	could not figure out address of additional information ******************************************"
 
 	imageURL = None
 	imagePageURL = None
+	tafelImageURL = None
+	tafelImagePageURL = None
 	wikipediaURL = None
 
 	if personXHTML != None:
@@ -341,14 +447,23 @@ def personeninfo (name):
 			if nodes.count() == 1:
 				wikipediaURL = nodes[0].stringValue()
 			print "	extracted information from person search page"
-
+			
+		if photos.has_key(name):
+			tafelImageURL = "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/" + photos[name] + "/120px-" + photos[name]
+			tafelImagePageURL = "http://commons.wikimedia.org/wiki/File:" + photos[name]
+		
+		imageURL = localCopyOfImageInFolder(imageURL, imagePageURL, "Personenbilder")
+		tafelImageURL = localCopyOfImageInFolder(tafelImageURL, tafelImagePageURL, "Tafelbilder")
+		
 		
 		print "	image URL: " + str(imageURL)
-		print "	imagePageURL: " + str(imagePageURL)
+		print "	image page URL: " + str(imagePageURL)
+		print "	tafelImage URL: " + str(tafelImageURL)
+		print "	tafelImage page URL: " + str(tafelImagePageURL)
 		print "	Wikipedia URL: " + str(wikipediaURL)
-	
-	return {"imageURL": imageURL, "imagePageURL": imagePageURL, "wikipediaURL": wikipediaURL}
 
+	
+	return {"imageURL": imageURL, "imagePageURL": imagePageURL, "tafelImageURL": tafelImageURL, "tafelImagePageURL": tafelImagePageURL, "wikipediaURL": wikipediaURL}
 
 
 
@@ -366,8 +481,25 @@ def makeDescription(name, titel, jahre, adresse, info):
 
 	imageTag = ""
 	if info["imageURL"] != None and info["imagePageURL"] != None:
-		imageTag = "<a class='portraitlink' style='display:block;text-decoration:none;color:#999;float:right;width:200px;text-align:right;' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='margin-top:-1em;margin-left:0.5em;max-width:200px;' src='" + info["imageURL"] + "' alt='" + name + u"'><br><span style=''>Bild: Wikipedia »</span></a>"
+		imagePath = "/".join(NSString.stringWithString_(info["imageURL"]).pathComponents()[-2:])
+		username = "Wikimedia Commons"
+		xattrs = xattr.listxattr(imagePath)
+		if "net.earthlingsoft.imageauthor" in xattrs:
+			username = xattr.getxattr(imagePath, "net.earthlingsoft.imageauthor")
+
+		imageTag = "<a class='portraitlink' style='display:block;text-decoration:none;color:#999;float:right;width:200px;text-align:right;' href='" +  info["imagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='margin-top:-1em;margin-left:0.5em;max-width:120px;' src='" + NSString.stringWithString_(info["imageURL"]).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding) + "' alt='" + name + u"'><br><span style=''>Bild: " + username + u" »</span></a>"
+
+	if info["tafelImageURL"] != None and info["tafelImagePageURL"] != None:
+		imagePath = "/".join(NSString.stringWithString_(info["tafelImageURL"]).pathComponents()[-2:])
+		username = "Wikimedia Commons"
+		xattrs = xattr.listxattr(imagePath)
+		if "net.earthlingsoft.imageauthor" in xattrs:
+			username = xattr.getxattr(imagePath, "net.earthlingsoft.imageauthor")
+		
+		imageTag = imageTag + "\n<a class='tafellink' style='display:block;text-decoration:none;color:#999;float:right;width:200px;text-align:right;' href='" +  info["tafelImagePageURL"] + "' title='Wikipedia Bildseite'><img class='portrait' style='margin-top:0;margin-left:0.5em;max-width:200px;' src='" + NSString.stringWithString_(info["tafelImageURL"]).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding) + u"' alt='Gedenktafel für " + name + u"'><br><span style=''>Bild: " + username + u" »</span></a>"
+
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("IMAGETAG", imageTag)
+
 
 	wikipediaTag = ""
 	if info["wikipediaURL"] != None:
@@ -473,6 +605,6 @@ for letter in letters:
 									
 	
 myXML = NSXMLDocument.alloc().initWithRootElement_(KML)
-path = NSString.stringWithString_(u"~/Desktop/Gedenktafeln.kml").stringByExpandingTildeInPath()
+path = NSString.stringWithString_(u"Gedenktafeln.kml").stringByExpandingTildeInPath()
 data = myXML.XMLData()
 data.writeToFile_atomically_(path, YES)
