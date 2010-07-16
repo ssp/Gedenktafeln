@@ -274,6 +274,7 @@ import xattr
 Speichert eine lokale Kopie des Bildes.
 """
 def localCopyOfImageInFolder(imageURLString, imagePageString, targetFolder):
+	username = None
 	if imageURLString != None:
 		fileName = NSString.stringWithString_(imageURLString).lastPathComponent()
 		filePath = targetFolder + "/" + fileName
@@ -317,13 +318,16 @@ def localCopyOfImageInFolder(imageURLString, imagePageString, targetFolder):
 				print "		* Could not download image information at " + imagePageString
 
 		else:
+			xattrs = xattr.listxattr(filePath)
+			if "net.earthlingsoft.imageauthor" in xattrs:
+				username = xattr.getxattr(filePath, "net.earthlingsoft.imageauthor")
 			print "	Cached image file available"
 		
 		newURL = myURL + targetFolder + "/" + fileName
 	else:
 		newURL = None
 		
-	return newURL
+	return [newURL, username]
 
 		
 
@@ -401,8 +405,10 @@ def personeninfo (name):
 
 	imageURL = None
 	imagePageURL = None
+	imageAuthor = None
 	tafelImageURL = None
 	tafelImagePageURL = None
+	tafelImageAuthor = None
 	wikipediaURL = None
 
 	if personXHTML != None:
@@ -452,18 +458,18 @@ def personeninfo (name):
 			tafelImageURL = "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/" + photos[name] + "/120px-" + photos[name]
 			tafelImagePageURL = "http://commons.wikimedia.org/wiki/File:" + photos[name]
 		
-		imageURL = localCopyOfImageInFolder(imageURL, imagePageURL, "Personenbilder")
-		tafelImageURL = localCopyOfImageInFolder(tafelImageURL, tafelImagePageURL, "Tafelbilder")
+		imageURL, imageAuthor = localCopyOfImageInFolder(imageURL, imagePageURL, "Personenbilder")
+		tafelImageURL, tafelImageAuthor = localCopyOfImageInFolder(tafelImageURL, tafelImagePageURL, "Tafelbilder")
 		
 		
-		print "	image URL: " + str(imageURL)
+		print "	image URL: " + str(imageURL) + " by " + str(imageAuthor)
 		print "	image page URL: " + str(imagePageURL)
-		print "	tafelImage URL: " + str(tafelImageURL)
+		print "	tafelImage URL: " + str(tafelImageURL) + " by " + str(tafelImageAuthor)
 		print "	tafelImage page URL: " + str(tafelImagePageURL)
 		print "	Wikipedia URL: " + str(wikipediaURL)
 
 	
-	return {"imageURL": imageURL, "imagePageURL": imagePageURL, "tafelImageURL": tafelImageURL, "tafelImagePageURL": tafelImagePageURL, "wikipediaURL": wikipediaURL}
+	return {"imageURL": imageURL, "imagePageURL": imagePageURL, "imageAuthor": imageAuthor, "tafelImageURL": tafelImageURL, "tafelImagePageURL": tafelImagePageURL, "tafelImageAuthor": tafelImageAuthor, "wikipediaURL": wikipediaURL}
 
 
 
@@ -476,7 +482,7 @@ def makeDescription(name, titel, jahre, adresse, info):
 	
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("NAME", name)
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("TITEL", titel)
-	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("JAHRE", "und ".join(jahre))
+	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("JAHRE", " und ".join(jahre))
 	htmlString = htmlString.stringByReplacingOccurrencesOfString_withString_("ADRESSE", adresse)
 
 	imageTag = ""
@@ -551,6 +557,7 @@ KMLDocument.addChild_(style)
 # ohne x, der Eintrag - steht für eine zusätzliche Datei mit Nachträgen.
 letters = "abcdefghijklmnopqrstuvwyz-"
 #letters = "g"
+csvlines = [u'"Name","Adresse","Beschäftigung","Wohnzeit","Bildadresse","Bildseite","Bildusername","Schildbildadresse","Schildbildseite","Schildbildusername","Wikipediaseite"']
 
 for letter in letters:
 	filename = "Webseiten/" + letter + ".html"
@@ -597,6 +604,8 @@ for letter in letters:
 					placemark.addChild_(snippet)
 					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("styleUrl", "#sspBalloonStyle"))
 					KMLDocument.addChild_(placemark)
+					csvlines += ['"' + '","'.join([reversedname, volleadresse,  titel, " und ".join(jahre), 
+					str(info["imageURL"]), NSString.stringWithString_(str(info["imagePageURL"])).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding), str(info["imageAuthor"]), NSString.stringWithString_(str(info["tafelImageURL"])).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding), str(info["tafelImagePageURL"]), str(info["tafelImageAuthor"]), str(info["wikipediaURL"])]) + '"']
 					jahre = []
 
 		else:
@@ -607,4 +616,6 @@ for letter in letters:
 myXML = NSXMLDocument.alloc().initWithRootElement_(KML)
 path = NSString.stringWithString_(u"Gedenktafeln.kml").stringByExpandingTildeInPath()
 data = myXML.XMLData()
-data.writeToFile_atomically_(path, YES)
+data.writeToFile_atomically_(path, True)
+path = NSString.stringWithString_(u"Gedenktafeln.csv").stringByExpandingTildeInPath()
+NSString.stringWithString_("\n".join(csvlines)).writeToFile_atomically_(path, True)
