@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #coding=utf-8
 """
-© 2010 by Sven-S. Porst <ssp-web@earthlingsoft.net>
+© 2010-2013 by Sven-S. Porst <ssp-web@earthlingsoft.net>
 
 Skript zum Auslesen der Gedenktafeln berühmter Bewohner Göttingens von
 	http://stadtarchiv.goettingen.de/texte/gedenktafelbuch.htm
@@ -32,6 +32,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 import re
+import zipfile
 from Foundation import *
 myURL = "http://earthlingsoft.net/ssp/Gedenktafeln/"
 
@@ -528,17 +529,26 @@ Skriptbeginn
 
 KML = NSXMLElement.elementWithName_("kml")
 KML.addAttribute_(NSXMLNode.attributeWithName_stringValue_("xmlns", "http://earth.google.com/kml/2.1"))
+KML.addAttribute_(NSXMLNode.attributeWithName_stringValue_("xmlns:atom", "http://www.w3.org/2005/Atom"))
 KMLDocument = NSXMLElement.elementWithName_("Document")
 KML.addChild_(KMLDocument)
 KMLDocument.addChild_(NSXMLNode.elementWithName_stringValue_("name", u"Gedenktafeln an Göttinger Häusern"))
+"""
 author = NSXMLElement.elementWithName_("atom:author")
 author.addChild_(NSXMLNode.elementWithName_stringValue_("atom:name", "Sven-S. Porst"))
 KMLDocument.addChild_(author)
+"""
 link = NSXMLNode.elementWithName_("atom:link")
+link.addAttribute_(NSXMLNode.attributeWithName_stringValue_("rel", "related"))
 link.addAttribute_(NSXMLNode.attributeWithName_stringValue_("href", "http://earthlingsoft.net/ssp/Gedenktafeln"))
 KMLDocument.addChild_(link)#
 styleString = u"""
-<Style id="sspBalloonStyle">
+<Style id="sspPlacemarkStyle">
+	<IconStyle>
+		<Icon>
+			<href>http://maps.google.com/mapfiles/kml/paddle/red-circle.png</href>
+		</Icon>
+	</IconStyle>
     <BalloonStyle>
       <!-- styling of the balloon text -->
       <text><![CDATA[
@@ -602,7 +612,7 @@ for letter in letters:
 					snippet = NSXMLNode.elementWithName_stringValue_("Snippet", titel)
 					snippet.addAttribute_(NSXMLNode.attributeWithName_stringValue_("maxLines", "1"))
 					placemark.addChild_(snippet)
-					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("styleUrl", "#sspBalloonStyle"))
+					placemark.addChild_(NSXMLNode.elementWithName_stringValue_("styleUrl", "#sspPlacemarkStyle"))
 					KMLDocument.addChild_(placemark)
 					csvlines += ['"' + '","'.join([reversedname, volleadresse,  titel, " und ".join(jahre), 
 					str(info["imageURL"]), NSString.stringWithString_(str(info["imagePageURL"])).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding), str(info["imageAuthor"]), NSString.stringWithString_(str(info["tafelImageURL"])).stringByAddingPercentEscapesUsingEncoding_(NSUTF8StringEncoding), str(info["tafelImagePageURL"]), str(info["tafelImageAuthor"]), str(info["wikipediaURL"])]) + '"']
@@ -614,8 +624,16 @@ for letter in letters:
 									
 	
 myXML = NSXMLDocument.alloc().initWithRootElement_(KML)
-path = NSString.stringWithString_(u"Gedenktafeln.kml").stringByExpandingTildeInPath()
+KMLPath = NSString.stringWithString_(u"Gedenktafeln.kml").stringByExpandingTildeInPath()
 data = myXML.XMLData()
-data.writeToFile_atomically_(path, True)
-path = NSString.stringWithString_(u"Gedenktafeln.csv").stringByExpandingTildeInPath()
-NSString.stringWithString_("\n".join(csvlines)).writeToFile_atomically_(path, True)
+data.writeToFile_atomically_(KMLPath, True)
+
+"""
+KMZPath = NSString.stringWithString_(u"Gedenktafeln.kmz").stringByExpandingTildeInPath()
+myZip = zipfile.ZipFile(KMZPath, 'w', zipfile.ZIP_DEFLATED)
+myZip.write(KMLPath)
+myZip.close()
+"""
+
+CSVPath = NSString.stringWithString_(u"Gedenktafeln.csv").stringByExpandingTildeInPath()
+NSString.stringWithString_("\n".join(csvlines)).writeToFile_atomically_(CSVPath, True)
