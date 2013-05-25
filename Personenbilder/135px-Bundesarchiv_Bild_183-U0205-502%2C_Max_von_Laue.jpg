@@ -1,0 +1,12 @@
+<html><head><title>Error generating thumbnail</title></head>
+<body>
+<h1>Error generating thumbnail</h1>
+<p>
+The requested page title was invalid, empty, or an incorrectly linked inter-language or inter-wiki title.
+It may contain one or more characters which cannot be used in titles.
+</p>
+<!-- http://commons.wikimedia.org/w/thumb.php?f=Bundesarchiv_Bild_183-U0205-502%252C_Max_von_Laue.jpg&amp;width=135 -->
+<!-- srv221 -->
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+<html><head><title>Error generating thumbnail</title></head>
+<body>
+<h1>Error generating thumbnail</h1>
+<p>
+Der Titel der angeforderten Seite ist ungültig, leer oder ein ungültiger Sprachlink von einem anderen Wiki. Möglicherweise enthält er nicht zulässige Sonderzeichen wie zum Beispiel <, >, |, [, ].
+</p>
+<!-- http://de.wikipedia.org/w/thumb.php?f=WP_Franz_K%25C3%25B6nig.jpg&amp;width=180 -->
+<!-- srv221 -->
+
+</body>
+</html>

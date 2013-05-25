@@ -1,0 +1,12 @@
+<html><head><title>Error generating thumbnail</title></head>
+<body>
+<h1>Error generating thumbnail</h1>
+<p>
+The requested page title was invalid, empty, or an incorrectly linked inter-language or inter-wiki title.
+It may contain one or more characters which cannot be used in titles.
+</p>
+<!-- http://commons.wikimedia.org/w/thumb.php?f=August_Luwig_Schl%25C3%25B6zer.jpg&amp;width=180 -->
+<!-- srv223 -->
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+<html><head><title>Error generating thumbnail</title></head>
+<body>
+<h1>Error generating thumbnail</h1>
+<p>
+The requested page title was invalid, empty, or an incorrectly linked inter-language or inter-wiki title.
+It may contain one or more characters which cannot be used in titles.
+</p>
+<!-- http://commons.wikimedia.org/w/thumb.php?f=Bundesarchiv_Bild_146-1987-074-16%252C_Dietrich_Bonhoeffer.jpg&amp;width=135 -->
+<!-- srv223 -->
+
+</body>
+</html>

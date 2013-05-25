@@ -1,0 +1,12 @@
+<html><head><title>Error generating thumbnail</title></head>
+<body>
+<h1>Error generating thumbnail</h1>
+<p>
+The requested page title was invalid, empty, or an incorrectly linked inter-language or inter-wiki title.
+It may contain one or more characters which cannot be used in titles.
+</p>
+<!-- http://commons.wikimedia.org/w/thumb.php?f=Hoffmann_von_Fallersleben%252C_Foto_von_P%252C_Bild-_und_R%25C3%25BCckseite.jpg&amp;width=135 -->
+<!-- srv222 -->
+
+</body>
+</html>
